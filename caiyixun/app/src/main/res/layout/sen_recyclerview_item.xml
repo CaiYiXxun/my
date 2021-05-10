@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:id="@+id/sen_recyclerview_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/sen_recyclerview_itemstyle"
+    android:orientation="vertical">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/sen_recyclerView_tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="15dp">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        >
+
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:id="@+id/sen_recyclerView_tv_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp">
+
+        </TextView>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/line"
+            ></ImageView>
+
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:id="@+id/sen_recyclerView_tv_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+
+        >
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="#57000000"
+            android:id="@+id/sen_recyclerView_tv_from1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp">
+        </TextView>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            ></ImageView>
+
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="#57000000"
+            android:id="@+id/sen_recyclerView_tv_to1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp">
+        </TextView>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

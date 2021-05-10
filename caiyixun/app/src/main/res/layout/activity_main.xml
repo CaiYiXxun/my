@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main"
+        android:background="#FFFFFF"
+        android:orientation="horizontal">
+
+    <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/Lin_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <EditText
+                android:inputType="number"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:id="@+id/edt_search"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/edittext_style"
+                android:hint="输入单号查找快递"
+                android:paddingLeft="10dp"
+                android:textColor="#FF515151"
+                android:textColorHint="#FFA3A3A3"></EditText>
+
+        <ImageView
+                android:id="@+id/search_button1"
+                android:onClick="onClickSearch"
+                android:layout_marginLeft="15dp"
+                android:layout_width="39dp"
+                android:layout_height="39dp"
+                android:background="@drawable/search_icon1"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:paddingLeft="20dp"
+            android:id="@+id/LY1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp">
+
+
+        <ImageView
+                android:onClick="onClickMyBill"
+                android:id="@+id/Bill"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/bill"
+                android:backgroundTint="#DC143C"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_below="@id/LY1"
+            android:paddingLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    >
+
+        <TextView
+                android:layout_width="70dp"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:text="我的账单"
+                android:textColor="#000000"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/Ly2"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="220dp">
+
+        <TextView
+                android:id="@+id/myreceive"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/botton2"
+                android:onClick="onclickMyReceive"
+                android:text="我的收件"
+                android:textColor="#ff000000"
+                android:textSize="20dp"/>
+
+        <TextView
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/mysent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/botton2_1"
+                android:onClick="onclickMySent"
+                android:text="我的寄件"
+                android:textColor="#ff000000"
+                android:textSize="20dp"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/Ly2"
+    ></FrameLayout>
+
+</RelativeLayout>
