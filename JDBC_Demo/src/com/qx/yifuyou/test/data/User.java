@@ -7,6 +7,7 @@ public class User implements Serializable {
     private ArrayList<Package> send_packages;
     private ArrayList<Package>receive_packages;
     private boolean isCorrect;
+    private static final long serialVersionUID = 123456L;
 
 
     User(ArrayList<Package> send_packages, ArrayList<Package> receive_packages, boolean isCorrect) {

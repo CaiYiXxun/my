@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class Quest implements Serializable {
     private int type;
+    private static final long serialVersionUID = 12345L;
 
     public String getPassword() {
         return password;

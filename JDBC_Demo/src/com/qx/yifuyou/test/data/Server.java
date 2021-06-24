@@ -15,14 +15,15 @@ public class Server {
         //加载驱动
         Class.forName("com.mysql.jdbc.Driver");
         //用户信息和url
-        String url = "jdbc:mysql://localhost:3306/delivery?useUnicode=true&characterEncoding=utf8&useSSL=false";
+        String url = "jdbc:mysql://localhost:3306/mydiliv?useUnicode=true&characterEncoding=utf8&useSSL=false";
         String username = "root";
-        String password = "123456";
+        String password = "1234";
         //获得连接 Connection代表数据库
         Connection connection = DriverManager.getConnection(url, username, password);
+        Connection connection2 = DriverManager.getConnection(url, username, password);
         //执行sql的对象 statement 这也是我们要进行操作的对象
         Statement statement = connection.createStatement();
-
+        Statement statement2 = connection2.createStatement();
         //SOCKET
         // 监听指定的端口
         int port = 8888;
@@ -46,7 +47,6 @@ public class Server {
                 Quest quest = null;
                 Package cn_package = null;
                 try {
-
                     //out = new PrintWriter(socket.getOutputStream());
                     //传对象用的
                     is = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -57,10 +57,26 @@ public class Server {
                     if (obj != null) {
                         quest = (Quest) obj;
                     }
+                    System.out.println(quest.getType()+","+quest.getMsg());
                     String sql;
                     ResultSet resultSet = null;
+                    ResultSet resultSet2 = null;
                     int packages_count;
                     int t_record_count = 0;
+                    /*根据请求不同的type值选择不同的功能模块，
+                    请求:
+                    type=1
+                    msg=用户账户
+                    password=用户密码
+                    返回:
+                    一个user对象（里面包含了该用户发出去的包裹对象以及收到的包裹对象，包裹对象中包含了该包裹的基本信息以及运输记录对象，运输记录对象中包含了该包裹的基本运输记录信息）
+
+                    请求:
+                    type=2时
+                    msg=要查询的快递单号
+                    返回:
+                    一个包裹对象（该包裹对象中包含了该包裹的基本信息以及运输记录对象，运输记录对象中包含了该包裹的基本运输记录信息）
+                    */
                     switch (quest.getType()) {
                         case 1:
                             String account = quest.getMsg();
@@ -81,6 +97,7 @@ public class Server {
 
                             sql = "select * from 订单 natural join 包裹 natural join 账户 where 账号=" + account + ";";
                             resultSet = statement.executeQuery(sql);//返回结果集，里面有查询结果
+
                             resultSet.last();
                             packages_count = resultSet.getRow();
                             resultSet.beforeFirst();//计算resultSet记录数
@@ -89,7 +106,6 @@ public class Server {
                             int i = 0, j = 0;
                             while (resultSet.next()) {
                                 send_packages.add(new Package());
-
                                 send_packages.get(i).setAccountNumber(account);
                                 send_packages.get(i).setOrderNumber(resultSet.getString("订单号"));
                                 send_packages.get(i).setFreight(resultSet.getInt("运费"));
@@ -133,8 +149,19 @@ public class Server {
                                 while (resultSet.next()) {
                                     transportRecords.add(new TransportRecord());
                                     transportRecords.get(j).setSerialNumber(resultSet.getString("流水号"));
-                                    transportRecords.get(j).setStartWarehouse(resultSet.getString("出发仓库"));
-                                    transportRecords.get(j).setDestinationWarehouse(resultSet.getString("目的仓库"));
+
+                                    String sql2="select * from 仓库 where ID=" + resultSet.getString("出发仓库") + ";";
+                                    resultSet2=statement2.executeQuery(sql2);
+                                    resultSet2.next();
+                                    transportRecords.get(j).setStartWarehouse(resultSet2.getString("仓库名"));
+
+                                    sql2="select * from 仓库 where ID=" + resultSet.getString("目的仓库") + ";";
+                                    resultSet2=statement2.executeQuery(sql2);
+                                    resultSet2.next();
+                                    transportRecords.get(j).setDestinationWarehouse(resultSet2.getString("仓库名"));
+
+//                                    transportRecords.get(j).setStartWarehouse(resultSet.getString("出发仓库"));
+//                                    transportRecords.get(j).setDestinationWarehouse(resultSet.getString("目的仓库"));
                                     transportRecords.get(j).setTransportVehicleId(resultSet.getString("交通工具"));
                                     boolean complete = complete(resultSet.getInt("是否完成"));
                                     transportRecords.get(j).setCompleted(complete);
@@ -212,8 +239,18 @@ public class Server {
                                 while (resultSet.next()) {
                                     transportRecords.add(new TransportRecord());
                                     transportRecords.get(j).setSerialNumber(resultSet.getString("流水号"));
-                                    transportRecords.get(j).setStartWarehouse(resultSet.getString("出发仓库"));
-                                    transportRecords.get(j).setDestinationWarehouse(resultSet.getString("目的仓库"));
+
+                                    String sql2="select * from 仓库 where ID=" + resultSet.getString("出发仓库") + ";";
+                                    resultSet2=statement2.executeQuery(sql2);
+                                    resultSet2.next();
+                                    transportRecords.get(j).setStartWarehouse(resultSet2.getString("仓库名"));
+
+                                    sql2="select * from 仓库 where ID=" + resultSet.getString("目的仓库") + ";";
+                                    resultSet2=statement2.executeQuery(sql2);
+                                    resultSet2.next();
+                                    transportRecords.get(j).setDestinationWarehouse(resultSet2.getString("仓库名"));
+//                                    transportRecords.get(j).setStartWarehouse(resultSet.getString("出发仓库"));
+//                                    transportRecords.get(j).setDestinationWarehouse(resultSet.getString("目的仓库"));
                                     transportRecords.get(j).setTransportVehicleId(resultSet.getString("交通工具"));
                                     boolean complete = complete(resultSet.getInt("是否完成"));
                                     transportRecords.get(j).setCompleted(complete);
@@ -245,6 +282,7 @@ public class Server {
                             String cn_number = quest.getMsg();
                             sql = "select * from 订单 natural join 包裹 natural join 账户 where 快递单号=" + cn_number + ";";
                             resultSet = statement.executeQuery(sql);//返回结果集，里面有查询结果
+
 
                             cn_package = new Package();
                             while (resultSet.next()) {
@@ -290,8 +328,17 @@ public class Server {
                             while (resultSet.next()) {
                                 transportRecords.add(new TransportRecord());
                                 transportRecords.get(j).setSerialNumber(resultSet.getString("流水号"));
-                                transportRecords.get(j).setStartWarehouse(resultSet.getString("出发仓库"));
-                                transportRecords.get(j).setDestinationWarehouse(resultSet.getString("目的仓库"));
+                                String sql2="select * from 仓库 where ID=" + resultSet.getString("出发仓库") + ";";
+                                resultSet2=statement2.executeQuery(sql2);
+                                resultSet2.next();
+                                transportRecords.get(j).setStartWarehouse(resultSet2.getString("仓库名"));
+
+                                sql2="select * from 仓库 where ID=" + resultSet.getString("目的仓库") + ";";
+                                resultSet2=statement2.executeQuery(sql2);
+                                resultSet2.next();
+                                transportRecords.get(j).setDestinationWarehouse(resultSet2.getString("仓库名"));
+//                                transportRecords.get(j).setStartWarehouse(resultSet.getString("出发仓库"));
+//                                transportRecords.get(j).setDestinationWarehouse(resultSet.getString("目的仓库"));
                                 transportRecords.get(j).setTransportVehicleId(resultSet.getString("交通工具"));
                                 boolean complete = complete(resultSet.getInt("是否完成"));
                                 transportRecords.get(j).setCompleted(complete);
@@ -425,7 +472,7 @@ public class Server {
                     }
                     if (quest.getType() == 2) {
                         try {
-                            cn_package.setFreight(-1);
+                            cn_package.setFreight(-1);//当包裹找不到设置邮费为-1表示
                             os.writeObject(cn_package);
                             os.flush();
                         } catch (IOException e) {
@@ -446,13 +493,7 @@ public class Server {
 
     }
 
-//    public static String gainTime(Date date) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        String dateStr = sdf.format(date);
-//        return dateStr;
-//    }
-
-    public static boolean complete(int x) {
+    public static boolean complete(int x) {//判断运输是否完成
         if (x == 1) {
             return true;
         } else {

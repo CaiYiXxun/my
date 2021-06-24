@@ -1,5 +1,7 @@
 package com.qx.yifuyou.test.myapplication;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.qx.yifuyou.test.data.Package;
 
@@ -86,6 +89,18 @@ public class SRVadapter extends RecyclerView.Adapter<SRVadapter.Viewholder>
                     intent.putExtra("package",packageList.get(position));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                }
+            });
+            tv_num.setOnLongClickListener(new View.OnLongClickListener()
+            {
+                @Override
+                public boolean onLongClick(View v)
+                {
+                    ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clipDataSet = ClipData.newPlainText(null, tv_num.getText().toString().split("：")[1]);
+                    clipboard.setPrimaryClip(clipDataSet);
+                    Toast.makeText(context,"已复制",Toast.LENGTH_SHORT).show();
+                    return true;
                 }
             });
         }

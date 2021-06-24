@@ -1,5 +1,7 @@
 package com.qx.yifuyou.test.myapplication;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.qx.yifuyou.test.data.Package;
 
@@ -40,7 +43,7 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Viewholder>
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position)
     {
-        holder.tv_num.setText("快递单号："+packageList.get(position).getCourierNumber());
+        holder.tv_num.setText("快递单号：" + packageList.get(position).getCourierNumber());
         holder.tv_from.setText(packageList.get(position).getSendingCity());
         holder.tv_from1.setText(packageList.get(position).getSenderName());
         holder.tv_to.setText(packageList.get(position).getRecipientCity());
@@ -51,7 +54,7 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Viewholder>
     @Override
     public int getItemCount()
     {
-        return (packageList==null)?0:packageList.size();
+        return (packageList == null) ? 0 : packageList.size();
     }
 
     public class Viewholder extends RecyclerView.ViewHolder
@@ -68,7 +71,7 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Viewholder>
         public Viewholder(@NonNull View itemView)
         {
             super(itemView);
-            rec_recyclerview_item=itemView.findViewById(R.id.rec_recyclerview_item);
+            rec_recyclerview_item = itemView.findViewById(R.id.rec_recyclerview_item);
             tv_num = itemView.findViewById(R.id.rec_recyclerView_tv_num);
             tv_from = itemView.findViewById(R.id.rec_recyclerView_tv_from);
             tv_from1 = itemView.findViewById(R.id.rec_recyclerView_tv_from1);
@@ -80,17 +83,30 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Viewholder>
                 public void onClick(View v)
                 {
                     Context context = v.getContext();
-                    Intent intent=new Intent(context,DetailActivity.class);
-                    intent.putExtra("package",packageList.get(position));
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("package", packageList.get(position));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
             });
-        }
-            public void setPosition (int position)
+            tv_num.setOnLongClickListener(new View.OnLongClickListener()
             {
-                this.position = position;
-            }
+                @Override
+                public boolean onLongClick(View v)
+                {
+                    ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clipDataSet = ClipData.newPlainText(null, tv_num.getText().toString().split("：")[1]);
+                    clipboard.setPrimaryClip(clipDataSet);
+                    Toast.makeText(context,"已复制",Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+        }
+
+        public void setPosition(int position)
+        {
+            this.position = position;
+        }
 
     }
 }

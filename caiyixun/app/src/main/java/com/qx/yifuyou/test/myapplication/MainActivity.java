@@ -103,7 +103,14 @@ public class MainActivity extends AppCompatActivity
         queryPackage = new QueryPackage(new Quest(2, editText.getText().toString()), handler);
         Thread t1 = new Thread(queryPackage);
         t1.start();
+    }
 
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent=new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private class MyHandler extends Handler

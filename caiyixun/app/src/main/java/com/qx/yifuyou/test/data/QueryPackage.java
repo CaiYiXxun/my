@@ -30,8 +30,8 @@ public class QueryPackage implements Runnable
     {
         try
         {
-            String host = "103.46.128.21";
-            int port = 14646;
+            String host = "103.46.128.53";
+            int port = 50488;
             // 与服务端建立连接
             Socket socket = null;
             socket = new Socket(host, port);
@@ -50,7 +50,7 @@ public class QueryPackage implements Runnable
             handler.sendEmptyMessage(0);
         } catch (Exception e)
         {
-
+            e.printStackTrace();
         }
 
     }

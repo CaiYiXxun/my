@@ -1,8 +1,10 @@
 package com.qx.yifuyou.test.data;
 
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -30,10 +32,11 @@ public class QueryAccount implements Runnable
     {
         try
         {
-            String host = "103.46.128.21";
-            int port = 14646;
+            String host = "103.46.128.53";
+            int port = 50488;
             // 与服务端建立连接
             Socket socket = null;
+
             socket = new Socket(host, port);
 
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
@@ -52,6 +55,5 @@ public class QueryAccount implements Runnable
         {
 
         }
-
     }
 }

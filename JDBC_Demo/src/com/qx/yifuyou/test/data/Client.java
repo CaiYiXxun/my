@@ -6,24 +6,26 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Client {
-    public static void main(String args[]) throws Exception {
+public class Client
+{
+    public static void main(String args[]) throws Exception
+    {
         // 要连接的服务端IP地址和端口
-        String host = "127.0.0.1";
-        //String host = "103.46.128.21";
-        int port = 8888;
-       //int port = 14646;
+        /*String host = "127.0.0.1";
+        int port = 8888;*/
+        String host = "103.46.128.53";
+        int port = 50488;
         // 与服务端建立连接
         Socket socket = new Socket(host, port);
         System.out.println("连接到服务器");
-        int type=1;
-        String msg="001";
-        String password="123456";
+        int type = 1;
+        String msg = "001";
+        String password = "123456";
         //String msg="196272706235";
         ObjectInputStream is = null;
         ObjectOutputStream os = null;
         //Quest quest=new Quest(type,msg);
-        Quest quest=new Quest(type,msg,password);
+        Quest quest = new Quest(type, msg, password);
         os = new ObjectOutputStream(socket.getOutputStream());
         is = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
         os.writeObject(quest);
@@ -35,18 +37,21 @@ public class Client {
         Package[] phone_packages;
         int i, j, k;
         System.out.println("读取对象成功");
-        if (obj != null) {
+        if (obj != null)
+        {
             System.out.println("传输成功");
             //1
             user = (User) obj;
 
-            ArrayList<Package>send_packages = user.getSend_packages();
+            ArrayList<Package> send_packages = user.getSend_packages();
             ArrayList<Package> receive_package = user.getReceive_packages();
-            for (i = 0; user.isCorrect()&&i < send_packages.size(); i++) {
+            for (i = 0; user.isCorrect() && i < send_packages.size(); i++)
+            {
                 System.out.println(send_packages.get(i).getAccountNumber());
                 System.out.println(send_packages.get(i).getOrderNumber());
                 System.out.println(send_packages.get(i).getRecipientAddress());
-                for (j = 0; j < send_packages.get(i).getTransportRecordList().size(); j++) {
+                for (j = 0; j < send_packages.get(i).getTransportRecordList().size(); j++)
+                {
                     System.out.println(send_packages.get(i).getTransportRecordList().get(j).getStartTime());
                     System.out.println(send_packages.get(i).getTransportRecordList().get(j).getEndingTime());
                 }
